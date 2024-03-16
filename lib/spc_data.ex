@@ -21,14 +21,29 @@ defmodule SpcData do
         default: [
           concurrency: 10
         ]
+      ],
+      batchers: [
+        default: [
+          batch_size: 100,
+          batch_timeout: 200,
+          concurrency: 10
+        ]
       ]
     )
   end
 
-  # first, we update the message's data individually inside handle_message/3
+  # first, we update the message's data individually 
+  # inside handle_message/3
   @impl true
   def handle_message(_, message, _) do
     IO.inspect(message.data, label: "Got message")
     message
+  end
+
+  @impl true
+  def handle_batch(_, messages, _, _) do
+    list = messages |> Enum.map(fn e -> e.data end)
+    IO.inspect(list, label: "Got batch")
+    messages
   end
 end
