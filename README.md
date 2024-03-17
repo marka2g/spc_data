@@ -12,3 +12,10 @@ After [installing kafka](https://kafka.apache.org/quickstart):
 >→ $ `kafka-topics --create --topic spc-data --bootstrap-server localhost:9092`
 4. clone the project, `cd` into root and seed Kafka with dummy spc data
 >→ $ `mix run --no-halt priv/publish_sample_spc_data.exs`
+
+
+<!-- 
+  read messages:
+
+  kafka-console-consumer --topic spc-data-two --from-beginning --bootstrap-server localhost:9092
+-->

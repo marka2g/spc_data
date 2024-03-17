@@ -25,7 +25,8 @@ defmodule SpcData.MixProject do
   defp deps do
     [
       {:broadway_kafka, "~> 0.4.1"},
-      {:ecto, "~> 3.11"}
+      {:ecto_sql, "~> 3.0"},
+      {:postgrex, ">= 0.0.0"}
     ]
   end
 

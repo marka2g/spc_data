@@ -5,16 +5,17 @@ defmodule SpcData do
   This particular module defines our Kafka Producer.
   """
   use Broadway
+  require Logger
+
+  alias Broadway.Message
+  alias SpcData.Repo
+  alias SpcData.Reading
 
   def start_link(_opts) do
     Broadway.start_link(__MODULE__,
       name: __MODULE__,
       producer: [
-        module: {BroadwayKafka.Producer, [
-          hosts: [localhost: 9092],
-          group_id: "group_1",
-          topics: ["spc-data"],
-        ]},
+        module: Application.fetch_env!(:spc_data, :producer_module),
         concurrency: 1
       ],
       processors: [
@@ -32,18 +33,64 @@ defmodule SpcData do
     )
   end
 
-  # first, we update the message's data individually 
-  # inside handle_message/3
+
+  # https://hexdocs.pm/broadway/apache-kafka.html#implement-broadway-callbacks
   @impl true
-  def handle_message(_, message, _) do
-    IO.inspect(message.data, label: "Got message")
-    message
+  def handle_message(_, %Message{} = message, _) do
+    message =
+      Message.update_data(message, fn data ->
+        case String.split(data, ", ") do
+          [id | values] ->
+            # returns list of readings maps
+            build_readings_list(id, values)
+          _ ->
+            data
+        end
+      end)
+
+    if is_binary(message.data) do
+      # Move the message to a batcher of errors.
+      Message.put_batcher(message, :parse_err)
+    else
+      message
+    end
   end
 
+  defp build_readings_list(id, values) do
+    values
+    |> Enum.reduce(
+        [],
+        fn value, acc ->
+          [
+            %{
+              equipment_id: id |> String.to_integer(),
+              value: value |> String.to_float(),
+              inserted_at: DateTime.utc_now
+            } 
+            | acc
+          ]
+      end
+    )
+  end
+
+  # messages is a list of readings maps
   @impl true
-  def handle_batch(_, messages, _, _) do
-    list = messages |> Enum.map(fn e -> e.data end)
-    IO.inspect(list, label: "Got batch")
+  def handle_batch(:default, messages, _, _) do
+    for readings <- messages do
+      {rows, _} = Repo.insert_all(Reading, readings.data)
+      Logger.debug("saved rows: #{rows}")
+    end
     messages
   end
+
+  def handle_batch(:parse_err, messages, _, _) do
+    Logger.info("in parse error batcher")
+    Logger.info(fn -> "size: #{length(messages)}" end)
+    Logger.info("the following messages with errors will be dropped")
+
+    Enum.map(messages, &Logger.info("message: #{inspect(&1.data)}"))
+
+    messages
+  end
+
 end
