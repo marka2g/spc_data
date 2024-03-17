@@ -14,7 +14,7 @@ After [installing kafka](https://kafka.apache.org/quickstart):
 3. create our Kafka topic
 >→ $ `kafka-topics --create --topic spc-data --bootstrap-server localhost:9092`
 
-## THe App Setup/Startup
+## The App Setup/Startup
 1. clone the project, `cd` into root and seed Kafka with dummy spc data
 >→ $ `mix run priv/repo/seeds.exs` to set up dummy equipment
 2. Add data the the Kafka topic
