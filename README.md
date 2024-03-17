@@ -43,6 +43,9 @@ After [installing kafka](https://kafka.apache.org/quickstart):
 >>iex> Repo.aggregate(Reading, :count, :id) # 6000
 >># check a random piece of equipment
 >>iex> StandardDeviation.equipment_stats(300)
+>> #=> SPC Results for Equipment # 300:
+>>    #=> → mean: 5.0249999999999995
+>>    #=> → standard deviation: 2.632975186615577 
 >>```
 
 
