@@ -49,5 +49,6 @@ iex> StandardDeviation.equipment_stats(300)
 ## How the App Works
 > The video below is a ~2min run-thru of how to add dummy spc data the Kafka topic and the query the db for spc data results
 
+https://github.com/marka2g/spc_data/assets/12756/af4539bd-517b-4801-9d06-8bd49eb5a2f6
 
 
