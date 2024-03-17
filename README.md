@@ -15,4 +15,8 @@ After [installing kafka](https://kafka.apache.org/quickstart):
 >→ $ `mix run --no-halt priv/publish_sample_spc_data.exs` to add dummy spc data to Kafka topic
 
 ## How the App works
-> The video below is a ~ 2min run-thru of how to add dummy spc data the Kafka topic and the query the db for spc data results
+> The video below is a ~2min run-thru of how to add dummy spc data the Kafka topic and the query the db for spc data results
+
+
+https://github.com/marka2g/spc_data/assets/12756/957a5c95-2cd7-4cc7-81e0-2b20c9c16968
+
