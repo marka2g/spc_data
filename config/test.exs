@@ -4,7 +4,7 @@ import Config
 config :spc_data, SpcData.Repo,
   username: "marksadegi",
   password: "",
-  database: "spc_data_dev",
+  database: "spc_data_test",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
