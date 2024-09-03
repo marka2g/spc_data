@@ -1,6 +1,6 @@
 # SpcData
 This is a small app used to demonstrate how to build a multi-staged data processing pipeline with Elixir using the official [Broadway Kafka](https://hexdocs.pm/broadway/apache-kafka.html#content) library.
-The write up lives [here](https://marksmarkdown.com/broadway-kafka.html)
+The write up lives [here](https://marksmarkdown.com/broadway_kafka.html)
 
 **NOTE:**
 In my dev environment, I took the quick setup route and used [`asdf-kafka`](https://github.com/ueisele/asdf-kafka) for my local setup. The first section's commands are specific to an `asdf` install - adjust the commands to suit your setup.
